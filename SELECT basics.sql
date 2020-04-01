@@ -12,8 +12,8 @@ SELECT population FROM world
 --Show the name and the population for 'Sweden', 'Norway' and 'Denmark'.
 
 
-select name, population From world
-where name in ('Sweden', 'Norway' , 'Denmark')
+SELECT name, population FROM world
+WHERE name IN ('Sweden', 'Norway' , 'Denmark')
 
 3.
 --Which countries are not too small and not too big? BETWEEN allows range checking (range specified is inclusive of boundary values). 
