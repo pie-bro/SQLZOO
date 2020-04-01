@@ -14,12 +14,12 @@ SELECT name FROM world
 --Show the countries in Europe with a per capita GDP greater than 'United Kingdom'.
 --Per Capita GDP
 
-select name
-from world
-where continent = 'Europe' and GDP/population > 
-(select gdp/population 
-from world
-where name = 'United Kingdom')
+SELECT name
+FROM world
+WHERE continent = 'Europe' AND GDP/population > 
+(SELECT gdp/population 
+FROM world
+WHERE name = 'United Kingdom')
 
 
 --Neighbours of Argentina and Australia
@@ -27,19 +27,19 @@ where name = 'United Kingdom')
 
 --List the name and continent of countries in the continents containing either Argentina or Australia. Order by name of the country.
 
-select name, continent
-from world
-where continent in (select continent from world
-where name = 'Argentina' or name = 'Australia')
-order by name
+SELECT name, continent
+FROM world
+WHERE continent IN (SELECT continent FROM world
+WHERE name = 'Argentina' OR name = 'Australia')
+ORDER BY name
 
 --4.
 --Which country has a population that is more than Canada but less than Poland? Show the name and the population.
 
-select name, population
-from world
-where population > (select population from world where name = 'Canada')
-and population < (select population from world where name = 'Poland')
+SELECT name, population
+FROM world
+WHERE population > (SELECT population FROM world WHERE name = 'Canada')
+AND population < (SELECT population FROM world WHERE name = 'Poland')
 
 --5.
 --Germany (population 80 million) has the largest population of the countries in Europe. 
@@ -57,9 +57,9 @@ and population < (select population from world where name = 'Poland')
 --Decimal places
 --Percent symbol %
 
-select name, concat(round(100*population/(select population from world where name = 'Germany')),'%')
-from world
-where continent = 'Europe'
+SELECT name, CONCAT(ROUND(100*population/(SELECT population FROM world WHERE name = 'Germany')),'%')
+FROM world
+WHERE continent = 'Europe'
 
 
 --To get a well rounded view of the important features of SQL you should move on to the next tutorial concerning aggregates.
@@ -79,9 +79,9 @@ SELECT name
 --6.
 --Which countries have a GDP greater than every country in Europe? [Give the name only.] (Some countries may have NULL gdp values)
 
-select name
-from world 
-where gdp >= all(select max(gdp) from world y where continent = 'Europe')
+SELECT name
+FROM world 
+WHERE gdp >= ALL(SELECT MAX(gdp) FROM world y WHERE continent = 'Europe')
 
 --We can refer to values in the outer SELECT within the inner SELECT. We can name the tables so that we can tell the difference between the inner and outer versions.
 
@@ -90,9 +90,9 @@ where gdp >= all(select max(gdp) from world y where continent = 'Europe')
 --7.
 --Find the largest country (by area) in each continent, show the continent, the name and the area:
 
-select continent, name, area 
-from world x
-where area >= all(select area from world y where area >0 and x.continent=y.continent)
+SELECT continent, name, area 
+FROM world x
+WHERE area >= ALL(SELECT area FROM world y WHERE area >0 AND x.continent=y.continent)
 
 
 --First country of each continent (alphabetically)
@@ -107,15 +107,15 @@ SELECT continent, name FROM world x WHERE name <= ALL(SELECT name FROM world y W
 --Find the continents where all countries have a population <= 25000000. 
 --Then find the names of the countries associated with these continents. Show name, continent and population.
 
-select name, continent, population
-from world x
-where 25000000 >= all (select population from world y where x.continent = y.continent and population >0 )
+SELECT name, continent, population
+FROM world x
+WHERE 25000000 >= ALL (SELECT population FROM world y WHERE x.continent = y.continent AND population >0 )
 
 
 --10.
 --Some countries have populations more than three times that of any of their neighbours (in the same continent). 
 --Give the countries and continents.
 
-select name, continent
-from world x
-where population > all (select population*3 from world y where x.continent=y.continent  and x.name!=y.name )
+SELECT name, continent
+FROM world x
+WHERE population > ALL (SELECT population*3 FROM world y WHERE x.continent=y.continent AND x.name!=y.name )
