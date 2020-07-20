@@ -70,27 +70,35 @@ WHERE stopa.name = 'Craiglockhart' AND stopb.name = 'Tollcross'
 
 --9.
 --Give a distinct list of the stops which may be reached from 'Craiglockhart' by taking one bus, including 'Craiglockhart' itself, 
-offered by the LRT company. Include the company and bus no. of the relevant services.
+--offered by the LRT company. Include the company and bus no. of the relevant services.
 
-SELECT DISTINCT stopb.name, a.company,a.num
-FROM route a JOIN route b ON (a.company=b.company AND a.num=b.num)
-JOIN stops stopa ON (a.stop = stopa.id)
-JOIN stops stopb ON (b.stop = stopb.id)
+SELECT stopb.name, a.company, a.num
+FROM route a
+JOIN route b ON a.num = b.num AND a.company = b.company
+JOIN stops stopa ON a.stop = stopa.id
+JOIN stops stopb ON b.stop = stopb.id
 WHERE stopa.name = 'Craiglockhart'
+AND a.company = 'LRT'
 
 --10.
 --Find the routes involving two buses that can go from Craiglockhart to Lochend.
 --Show the bus no. and company for the first bus, the name of the stop for the transfer,
 --and the bus no. and company for the second bus.
 
-SELECT DISTINCT a.num, a.company,stopb.name,c.num,c.company
-FROM route a 
-JOIN route b ON (a.company=b.company AND a.num=b.num)
-JOIN (route c JOIN route d ON (c.company=d.company AND c.num=d.num))
-JOIN stops stopa ON (a.stop = stopa.id)
-JOIN stops stopb ON (b.stop = stopb.id)
-JOIN stops stopc ON (c.stop = stopc.id)
-JOIN stops stopd ON (d.stop = stopd.id)
-WHERE stopa.name = 'Craiglockhart'
-AND stopd.name = 'Lochend'
-AND stopb.name = stopc.name
+SELECT e.num,e.company, e.name, f.num, f.company
+FROM
+(SELECT distinct stopb.name, a.company, a.num
+FROM route a
+JOIN route b ON a.num = b.num AND a.company = b.company
+JOIN stops stopa ON a.stop = stopa.id
+JOIN stops stopb ON b.stop = stopb.id
+WHERE stopa.name = 'Craiglockhart') e
+JOIN
+(SELECT distinct stopd.name, c.company, c.num
+FROM route c
+JOIN route d ON c.num = d.num AND c.company = d.company
+JOIN stops stopc ON c.stop = stopc.id
+JOIN stops stopd ON d.stop = stopd.id
+WHERE stopc.name = 'Lochend') f
+ON e.name = f.name
+ORDER BY 1,2,3,4
