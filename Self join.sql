@@ -94,11 +94,11 @@ JOIN stops stopa ON a.stop = stopa.id
 JOIN stops stopb ON b.stop = stopb.id
 WHERE stopa.name = 'Craiglockhart') e
 JOIN
-(SELECT stopd.name, c.company, c.num
+(SELECT stopc.name, c.company, c.num
 FROM route c
 JOIN route d ON c.num = d.num AND c.company = d.company
 JOIN stops stopc ON c.stop = stopc.id
 JOIN stops stopd ON d.stop = stopd.id
-WHERE stopc.name = 'Lochend') f
+WHERE stopd.name = 'Lochend') f
 ON e.name = f.name
 ORDER BY 1,2,3,4
