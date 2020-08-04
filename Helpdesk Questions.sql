@@ -1,4 +1,4 @@
---Helpdesk Easy Questions
+--Helpdesk Easy Questions    8,9
 
 --1.There are three issues that include the words "index" and "Oracle". Find the call_date for each of them
 
@@ -74,6 +74,40 @@ FROM Caller
 ) f
 ON 
 e.Contact_id = f.Caller_id
+
+
+--**9.For each shift show the number of staff assigned. Beware that some roles may be NULL and that the same person might have been assigned to multiple roles 
+--(The roles are 'Manager', 'Operator', 'Engineer1', 'Engineer2').
+
+SELECT e.Shift_date, e.Shift_type, COUNT(Manager)
+FROM
+(SELECT Shift_date, Shift_type, Manager
+FROM Shift
+UNION
+SELECT Shift_date, Shift_type, Operator
+FROM Shift
+UNION
+SELECT Shift_date, Shift_type, Engineer1
+FROM Shift
+UNION
+SELECT Shift_date, Shift_type, Engineer2
+FROM Shift) e
+GROUP BY 1,2
+
+--10.Caller 'Harry' claims that the operator who took his most recent call was abusive and insulting. Find out who took the call (full name) and when.
+SELECT First_name, Last_name, Call_date
+FROM Staff 
+JOIN Issue ON Staff_code = Taken_by
+WHERE Caller_id = 
+(SELECT Caller_id
+FROM Caller
+WHERE First_name LIKE 'Harry')
+ORDER BY 3 DESC
+LIMIT 1
+
+
+
+
 
 
 
