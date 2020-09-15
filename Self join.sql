@@ -87,14 +87,14 @@ AND a.company = 'LRT'
 
 SELECT e.num,e.company, e.name, f.num, f.company
 FROM
-(SELECT stopb.name, a.company, a.num
+(SELECT DISTINCT stopb.name, a.company, a.num
 FROM route a
 JOIN route b ON a.num = b.num AND a.company = b.company
 JOIN stops stopa ON a.stop = stopa.id
 JOIN stops stopb ON b.stop = stopb.id
 WHERE stopa.name = 'Craiglockhart') e
 JOIN
-(SELECT stopc.name, c.company, c.num
+(SELECT DISTINCT stopc.name, c.company, c.num
 FROM route c
 JOIN route d ON c.num = d.num AND c.company = d.company
 JOIN stops stopc ON c.stop = stopc.id
