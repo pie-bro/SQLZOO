@@ -95,6 +95,7 @@ FROM Shift) e
 GROUP BY 1,2
 
 --10.Caller 'Harry' claims that the operator who took his most recent call was abusive and insulting. Find out who took the call (full name) and when.
+--1)
 SELECT First_name, Last_name, Call_date
 FROM Staff 
 JOIN Issue ON Staff_code = Taken_by
@@ -105,7 +106,13 @@ WHERE First_name LIKE 'Harry')
 ORDER BY 3 DESC
 LIMIT 1
 
-
+--2)
+SELECT s.first_name, s.last_name, call_date
+FROM Caller c JOIN Issue i ON c.Caller_id = i.Caller_id
+JOIN Staff s ON s.Staff_code = i.Taken_by
+WHERE c.first_name LIKE 'Harry'
+ORDER BY 3 DESC
+LIMIT 1
 
 
 
