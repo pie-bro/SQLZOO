@@ -57,7 +57,7 @@ FROM Caller
 WHERE Caller_id NOT IN
 (SELECT Caller_id
 FROM  Issue 
-GROUP BY 1)
+)
 
 --**8.For each customer show: Company name, contact name, number of calls where the number of calls is fewer than 5
 SELECT Company_name, First_name, Last_name, nc
