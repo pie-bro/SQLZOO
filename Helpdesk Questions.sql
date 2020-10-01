@@ -115,7 +115,19 @@ ORDER BY 3 DESC
 LIMIT 1
 
 
+--Helpdesk Hard Questions
 
+--11. Show the manager and number of calls received for each hour of the day on 2017-08-12
 
-
+SELECT b.Manager, a.Hr, a.cc
+FROM
+(SELECT DATE_FORMAT(Call_date,'%Y-%m-%d') DATE, DATE_FORMAT(Call_date,'%Y-%m-%d %H') Hr, DATE_FORMAT(Call_date,'%H') hour, COUNT(Caller_id) cc
+FROM Issue 
+WHERE DATE_FORMAT(Call_date,'%Y-%m-%d') ='2017-08-12'
+GROUP BY 1,2,3) a
+JOIN
+(SELECT Shift_date, Shift_type, Manager
+FROM Shift) b
+ON a.Date = b.Shift_date
+WHERE b.Shift_type = 'Early' AND a.hour<14 OR b.Shift_type = 'Late' AND a.hour >= 14
 
