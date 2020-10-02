@@ -140,6 +140,22 @@ FROM Issue
 GROUP BY 1
 ORDER BY Count DESC
 LIMIT 29
-) 
+) a
 
 SELECT ROUND(Count(DISTINCT Caller_id)*0.2,0) caller FROM Issue
+
+
+--13.Annoying customers. Customers who call in the last five minutes of a shift are annoying. Find the most active customer who has never been annoying.
+
+SELECT Company_name, COUNT(*) abna
+FROM Customer cu JOIN Caller c ON cu.Company_ref = c.Company_ref
+JOIN Issue i ON i.Caller_id = c.Caller_id
+WHERE i.Caller_id NOT IN
+(
+SELECT Caller_id
+FROM Issue
+WHERE Date_Format(Call_date, '%H:%i') BETWEEN '13:55' AND '14' 
+OR Date_Format(Call_date, '%H:%i') BETWEEN '19:55' AND '20' )
+GROUP BY 1
+ORDER BY abna DESC
+LIMIT 1
