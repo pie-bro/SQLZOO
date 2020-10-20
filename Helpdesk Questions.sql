@@ -1,4 +1,4 @@
---Helpdesk Easy Questions    8,9,12
+--Helpdesk Easy Questions    8,9,12,14
 
 --1.There are three issues that include the words "index" and "Oracle". Find the call_date for each of them
 
@@ -169,3 +169,24 @@ OR Date_Format(Call_date, '%H:%i') BETWEEN '19:55' AND '20' )
 GROUP BY 1
 ORDER BY abna DESC
 LIMIT 1
+                                                                      
+--14.Maximal usage. If every caller registered with a customer makes a call in one day then that customer has "maximal usage" of the service. 
+--List the maximal customers for 2017-08-13.
+                                                                      
+SELECT a.company_name, caller_count, issue_count
+FROM
+(SELECT company_name, Count(*) issue_count
+FROM Customer cu
+JOIN Caller c ON cu.Company_ref = c.Company_ref
+GROUP BY 1
+) a
+JOIN 
+(
+SELECT company_name, COUNT(DISTINCT(c.caller_id)) caller_count
+FROM Customer cu
+JOIN Caller c ON cu.company_ref = c.company_ref
+JOIN Issue i ON c.caller_id = i.caller_id
+WHERE DATE_FORMAT(call_date, '%Y-%m-%d') = '2017-08-13'
+GROUP BY 1) b
+ON a.company_name = b.company_name
+AND issue_count = caller_count                                              
