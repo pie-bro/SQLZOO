@@ -170,7 +170,7 @@ GROUP BY 1
 ORDER BY abna DESC
 LIMIT 1
                                                                       
---14.Maximal usage. If every caller registered with a customer makes a call in one day then that customer has "maximal usage" of the service. 
+**--14.Maximal usage. If every caller registered with a customer makes a call in one day then that customer has "maximal usage" of the service. 
 --List the maximal customers for 2017-08-13.
                                                                       
 SELECT a.company_name, caller_count, issue_count
